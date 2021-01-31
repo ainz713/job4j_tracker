@@ -14,15 +14,19 @@ public class Profession {
     }
 
     public String getName() {
+        return null;
     }
 
     public String getSurname() {
+        return null;
     }
 
     public String getEducation() {
+        return null;
     }
 
     public String getBirthday() {
+        return null;
     }
 
 }

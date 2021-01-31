@@ -8,4 +8,8 @@ public class Doctor extends Profession {
         super(name, surname, education, birthday);
         this.specialization = specialization;
     }
+
+    public String getSpecialization() {
+        return null;
+    }
 }
