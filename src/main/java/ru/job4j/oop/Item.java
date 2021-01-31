@@ -1,8 +1,11 @@
 package ru.job4j.oop;
 
+import java.time.LocalDateTime;
+
 public class Item {
     private String name;
     private int id;
+    private LocalDateTime created = LocalDateTime.now();;
 
     public Item() {
     }

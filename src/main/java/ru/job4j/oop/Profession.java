@@ -6,6 +6,13 @@ public class Profession {
     private String education;
     private String birthday;
 
+    public Profession(String name, String surname, String education, String birthday) {
+        this.name = name;
+        this.surname = surname;
+        this.education = education;
+        this.birthday = birthday;
+    }
+
     public String getName() {
     }
 
@@ -17,36 +24,10 @@ public class Profession {
 
     public String getBirthday() {
     }
+
 }
 
-public class Engineer extends Profession {
-    private String typeofengineer;
-}
 
-public class Doctor extends Profession {
-    private String specialization;
-}
 
-public class Surgeon extends Doctor {
-    private String timeofoperation;
-    public String getOperation() {
-    }
-}
 
-public class Dentist extends Doctor {
-    private String operationdifficulty;
-    public String getPacient() {
-    }
-}
 
-public class Programmer extends Engineer {
-    private String langofprogramming;
-    public String getProject() {
-    }
-}
-
-public class Builder extends Engineer {
-    private String clasbuildera;
-    public String getBuilding() {
-    }
-}
