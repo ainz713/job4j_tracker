@@ -7,6 +7,27 @@ public class Tracker {
     private int ids = 1;
     private int size = 0;
 
+    private int indexOf(int id) {
+        int rsl = -1;
+        for (int index = 0; index < size; index++) {
+            if (items[index].getId() == id) {
+                rsl = index;
+                break;
+            }
+        }
+        return rsl;
+    }
+
+    public boolean replace(int id, Item item) {
+        boolean result = true;
+       int rsl = indexOf(id);
+        if (rsl == -1) {
+            result = false;
+        }
+        items[rsl].setName(item.getName());
+        return result;
+    }
+
     public Item add(Item item) {
         item.setId(ids++);
         items[size++] = item;
