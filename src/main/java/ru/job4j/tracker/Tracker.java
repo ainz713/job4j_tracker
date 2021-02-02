@@ -18,6 +18,18 @@ public class Tracker {
         return rsl;
     }
 
+    public boolean delete(int id) {
+       boolean result = true;
+        int rsl = indexOf(id);
+        if (rsl == -1) {
+            result = false;
+        }
+        System.arraycopy(items, rsl + 1, items, rsl, size - rsl);
+        items[size - 1] = null;
+        size--;
+        return result;
+    }
+
     public boolean replace(int id, Item item) {
         boolean result = true;
        int rsl = indexOf(id);
