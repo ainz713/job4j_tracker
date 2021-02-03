@@ -33,10 +33,11 @@ public class Tracker {
     public boolean replace(int id, Item item) {
         boolean result = true;
        int rsl = indexOf(id);
-        if (rsl == -1) {
+       item.setId(id);
+        if (rsl != -1) {
             result = false;
         }
-        items[rsl].setName(item.getName());
+        items[rsl] = item;
         return result;
     }
 
@@ -56,8 +57,7 @@ public class Tracker {
         for (int index = 0; index < size; index++) {
             Item item = items[index];
             if (item.getName().equals(key)) {
-                razmer++;
-                rsl[razmer] = item;
+                rsl[razmer++] = item;
             }
         }
         return Arrays.copyOf(rsl, razmer);
