@@ -14,16 +14,8 @@ public class Matches {
             int matches = Integer.parseInt(input.nextLine());
             turn = !turn;
             /* Остальная логика игры. */
-            if (matches == 3) {
                 count -= matches;
                 System.out.println(count + " спичек осталось на столе");
-            } else if (matches == 1) {
-                count -= matches;
-                System.out.println(count + " спичек осталось на столе");
-            } else {
-                count -= matches;
-                System.out.println(count + " спичек осталось на столе");
-            }
         }
         if (!turn) {
             System.out.println("Выиграл первый игрок");
