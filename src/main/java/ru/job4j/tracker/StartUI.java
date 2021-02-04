@@ -29,6 +29,13 @@ public class StartUI {
         }
     }
 
+    public static void findAllItem(Input input, Tracker tracker) {
+        Item[] massiv = tracker.findAll();
+        for (int i = 0; i < massiv.length; i++) {
+            System.out.println(massiv[i]);
+        }
+    }
+
     public static void findbyIdItem(Input input, Tracker tracker) {
         int nomer = input.askInt("Введите id заявки, которую необходимо найти: ");
         Item temp = tracker.findById(nomer);
@@ -59,10 +66,7 @@ public class StartUI {
                 if (select == 0) {
                     StartUI.createItem(input, tracker);
                 } else if (select == 1) {
-                    Item[] massiv = tracker.findAll();
-                    for (int i = 0; i < massiv.length; i++) {
-                        System.out.println(massiv[i]);
-                    }
+                    StartUI.findAllItem(input, tracker);
                 } else if (select == 2) {
                     StartUI.replaceItem(input, tracker);
                 } else if (select == 3) {
