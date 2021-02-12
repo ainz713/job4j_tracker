@@ -1,14 +1,16 @@
 package ru.job4j.tracker;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public final class Tracker {
     private static Tracker instance = null;
-    private final Item[] items = new Item[100];
+    private final List<Item> items = new ArrayList<>(100);
     private int ids = 1;
     private int size = 0;
 
-    private Tracker(){
+    public Tracker(){
     }
 
     public static Tracker getInstance() {
@@ -21,7 +23,7 @@ public final class Tracker {
     private int indexOf(int id) {
         int rsl = -1;
         for (int index = 0; index < size; index++) {
-            if (items[index].getId() == id) {
+            if (items.get(index).getId() == id) {
                 rsl = index;
                 break;
             }
@@ -35,7 +37,7 @@ public final class Tracker {
         if (rsl != -1) {
             result = true;
             System.arraycopy(items, rsl + 1, items, rsl, size - rsl);
-            items[size - 1] = null;
+            items.set(size - 1, null);
             size--;
         }
         return result;
@@ -47,37 +49,37 @@ public final class Tracker {
        item.setId(id);
         if (rsl != -1) {
             result = true;
-            items[rsl] = item;
+            items.set(rsl, item);
         }
         return result;
     }
 
     public Item add(Item item) {
         item.setId(ids++);
-        items[size++] = item;
+        items.set(size++, item);
         return item;
     }
 
-    public Item[] findAll() {
-        return Arrays.copyOf(items, size);
+    public List<Item> findAll() {
+        return List.copyOf(items);
     }
 
-    public Item[] findByName(String key) {
+    public List<Item> findByName(String key) {
         int razmer = 0;
-        Item[] rsl = new Item[size];
+        List<Item> rsl = new ArrayList<>(size);
         for (int index = 0; index < size; index++) {
-            Item item = items[index];
+            Item item = items.get(index);
             if (item.getName().equals(key)) {
-                rsl[razmer++] = item;
+                rsl.set(razmer++, item);
             }
         }
-        return Arrays.copyOf(rsl, razmer);
+        return List.copyOf(rsl);
     }
 
     public Item findById(int id) {
         Item rsl = null;
         for (int index = 0; index < size; index++) {
-            Item item = items[index];
+            Item item = items.get(index);
             if (item.getId() == id) {
                 rsl = item;
                 break;
