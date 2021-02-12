@@ -48,7 +48,7 @@ public final class Tracker {
        item.setId(id);
         if (rsl != -1) {
             result = true;
-            items.add(rsl, item);
+            items.set(rsl, item);
         }
         return result;
     }
