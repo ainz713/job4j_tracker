@@ -16,7 +16,6 @@ public class Triangle {
         return (p * (p - a) * (p - b) * (p - c));
     }
 
-
     public boolean exist(double ab, double ac, double bc) {
         return ab + ac > bc && ac + bc > ab && ab + bc > ac;
     }

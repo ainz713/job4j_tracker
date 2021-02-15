@@ -7,8 +7,8 @@ public class NotifyAccount {
     public static HashSet<Account> sent(List<Account> accounts) {
         HashSet<Account> rsl = new HashSet<>();
         /* for-each accounts to HashSet; */
-        for (Account e:
-             accounts) {
+        for (Account e
+                :accounts) {
             rsl.add(e);
         }
         return rsl;

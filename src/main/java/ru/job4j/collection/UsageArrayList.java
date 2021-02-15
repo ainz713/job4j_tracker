@@ -4,12 +4,12 @@ import java.util.ArrayList;
 
 public class UsageArrayList {
     public static void main(String[] args) {
-        ArrayList <String> list = new ArrayList<>();
+        ArrayList<String> list = new ArrayList<>();
         list.add("Petr");
         list.add("Ivan");
         list.add("Stepan");
-        for (String g:
-             list) {
+        for (String g
+                :list) {
             System.out.println(g);
         }
     }

@@ -10,7 +10,7 @@ public final class Tracker {
     private int ids = 1;
     private int size = 0;
 
-    public Tracker(){
+    public Tracker() {
     }
 
     public static Tracker getInstance() {
