@@ -99,7 +99,6 @@ public class StartUITest {
                         "1. === Exit Program ====" + System.lineSeparator()
         ));
     }
-
     @Test
     public void whenFindByNameAction() {
         Output out = new StubOutput();
