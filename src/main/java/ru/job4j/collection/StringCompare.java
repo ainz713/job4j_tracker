@@ -8,14 +8,13 @@ import java.util.Comparator;
             char[] array1 = left.toCharArray();
             char[] array2 = right.toCharArray();
             int rez = 0;
-            if (array1.length == array2.length) {
-                for (int i = 0; i < array1.length; i++) {
+                for (int i = 0; i < Math.min(array1.length, array2.length); i++) {
                     rez = Character.compare(array1[i], array2[i]);
                     if (rez != 0) {
                         break;
                     }
                 }
-            } else {
+            if (rez == 0) {
                 return Integer.compare(array1.length, array2.length);
             }
             return rez;
