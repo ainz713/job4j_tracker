@@ -26,11 +26,7 @@ public class DepartmentsTest {
 
     @Test
     public void whenLeftGreaterThanRightResultShouldBePositive() {
-        Departments compare = new Departments();
-        int rst = compare.compare(
-                "K1",
-                "K1/SK1"
-        );
+        int rst = ("K1").compareTo("K1/SK1");
         assertThat(rst, lessThan(0));
     }
 }

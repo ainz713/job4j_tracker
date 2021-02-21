@@ -2,7 +2,7 @@ package ru.job4j.collection;
 
 import java.util.*;
 
-public class Departments implements Comparator<String> {
+public class Departments {
 
     public static List<String> fillGaps(List<String> deps) {
         Set<String> tmp = new LinkedHashSet<>();
@@ -26,10 +26,5 @@ public class Departments implements Comparator<String> {
 
     public static void sortDesc(List<String> orgs) {
         orgs.sort(new DepDescComp());
-    }
-
-    @Override
-    public int compare(String o1, String o2) {
-        return o1.compareTo(o2);
     }
 }
