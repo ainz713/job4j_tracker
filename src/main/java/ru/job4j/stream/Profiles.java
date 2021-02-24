@@ -7,18 +7,12 @@ import java.util.stream.Collectors;
 
 public class Profiles {
     public List<Address> collect(List<Profile> profiles) {
-        Comparator<Address> comparator = new Comparator<Address>() {
-            @Override
-            public int compare(Address left, Address right) {
-                return left.getCity().compareTo(right.getCity());
-            }
-        };
-        List<Address> bugs = profiles.stream().map(
-                task -> task.getAddress()
+        Comparator<Address> comparator = Comparator.comparing(Address::getCity);
+        return profiles.stream().map(
+                Profile::getAddress
         )
                 .sorted(comparator)
                 .distinct()
                 .collect(Collectors.toList());
-        return bugs;
     }
 }
