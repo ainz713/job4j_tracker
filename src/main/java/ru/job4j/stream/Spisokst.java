@@ -5,11 +5,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Spisokst {
-    public Map<String, Object> listvmap(List<Student> students) {
+    public Map<String, Student> listvmap(List<Student> students) {
         return students.stream().distinct().collect(
                 Collectors.toMap(
                        Student::getSurname,
-                        Student::getClass
+                        e -> e,
+                        (f, s) -> f.equals(s) ? f : s
                 )
 );
     }
