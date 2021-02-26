@@ -10,7 +10,7 @@ public class Spisokst {
                 Collectors.toMap(
                        Student::getSurname,
                         e -> e,
-                        (f, s) -> f.equals(s) ? f : s
+                        (f, s) -> f
                 )
 );
     }
