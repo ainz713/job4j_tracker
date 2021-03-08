@@ -16,7 +16,7 @@ after_success:
 notifications:
   email:
     recipients:
-      -adyuz888@gmail.com
+      - adyuz888@gmail.com
     on_success: never # default: change
     on_failure: always # default: always
 env:

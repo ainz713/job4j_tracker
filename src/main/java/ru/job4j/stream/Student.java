@@ -7,12 +7,12 @@ public class Student {
 
     private String surname;
 
-    public void setSurname(String surname) {
+    public Student(int score, String surname) {
+        this.score = score;
         this.surname = surname;
     }
 
-    public Student(int score, String surname) {
-        this.score = score;
+    public void setSurname(String surname) {
         this.surname = surname;
     }
 
