@@ -6,16 +6,15 @@ import java.util.HashSet;
 public class Article {
     public static boolean generateBy(String origin, String line) {
         HashSet<String> sp1 = new HashSet<>();
-        String[] sp2 = line.split("");
+        String[] sp2 = line.replaceAll("[,.!;:]", "").split(" ");
         Collections.addAll(sp1, sp2);
-        int count = 0;
         for (String s
                 : sp1) {
-            if (origin.contains(s)) {
-                count++;
+            if (!origin.contains(s)) {
+                return false;
             }
         }
-        return count == sp1.size();
+        return true;
     }
 }
 
