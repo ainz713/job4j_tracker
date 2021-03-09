@@ -5,30 +5,29 @@ import java.util.*;
 public class FreezeStr {
 
     public static boolean eq(String left, String right) {
-        HashMap<Integer, String> map = new HashMap<>();
-        HashMap<Integer, String> map1 = new HashMap<>();
-        var l = left.split("");
-        var r = right.split("");
-        int key = 0;
+        HashMap<Character, Integer> map = new HashMap<>();
+        var l = left.toCharArray();
+        var r = right.toCharArray();
         for (var s
                 : l) {
-            map.put(key, s);
-            key++;
+            int key = 0;
+            for (char c : l) {
+                if (c == s) {
+                    key++;
+                }
+            }
+            map.put(s, key);
         }
-        key = 0;
         for (var s
                 : r) {
-            map1.put(key, s);
-            key++;
+            if (!map.containsKey(s)) {
+                return false;
+            } else if (map.containsKey(s) && map.get(s) == 1) {
+                    map.remove(s);
+            } else if (map.containsKey(s) && map.get(s) > 1) {
+                map.put(s, map.get(s) - 1);
+            }
         }
-
-        List<String> listl = new ArrayList<>(map.values());
-
-        List<String> listr = new ArrayList<>(map1.values());
-
-        Collections.sort(listl);
-        Collections.sort(listr);
-
-      return listl.equals(listr);
+      return map.isEmpty();
     }
 }
