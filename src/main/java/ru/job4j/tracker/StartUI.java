@@ -10,7 +10,7 @@ public class StartUI {
         this.out = out;
     }
 
-    public void init(Input input, Tracker tracker, List<UserAction> actions) {
+    public void init(Input input, Store memTracker, List<UserAction> actions) {
             boolean run = true;
             while (run) {
                 this.showMenu(actions);
@@ -20,7 +20,7 @@ public class StartUI {
                     continue;
                 }
                 UserAction action = actions.get(select);
-                run = action.execute(input, tracker);
+                run = action.execute(input, memTracker);
             }
         }
 
@@ -34,16 +34,20 @@ public class StartUI {
         public static void main(String[] args) {
             Output output = new ConsoleOutput();
             Input input = new ValidateInput(output, new ConsoleInput());
-            Tracker tracker = new Tracker();
-            List<UserAction> actions = new ArrayList<>();
-                    actions.add(new CreateAction(output));
-                    actions.add(new FindAllItemsAction(output));
-                    actions.add(new ReplaceAction(output));
-                    actions.add(new DeleteAction(output));
-                    actions.add(new FindIdItemAction(output));
-                    actions.add(new FindNameItemAction(output));
-                    actions.add(new ExitAction(output));
-            new StartUI(output).init(input, tracker, actions);
+            try (Store tracker = new SqlTracker()) {
+                tracker.init();
+                List<UserAction> actions = new ArrayList<>();
+                actions.add(new CreateAction(output));
+                actions.add(new FindAllItemsAction(output));
+                actions.add(new ReplaceAction(output));
+                actions.add(new DeleteAction(output));
+                actions.add(new FindIdItemAction(output));
+                actions.add(new FindNameItemAction(output));
+                actions.add(new ExitAction(output));
+                new StartUI(output).init(input, tracker, actions);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

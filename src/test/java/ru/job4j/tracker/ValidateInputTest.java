@@ -35,7 +35,7 @@ public class ValidateInputTest {
     @Test
     public void whenNegativeInput() {
         Output out = new StubOutput();
-        Tracker tracker = new Tracker();
+        Store memTracker = new SqlTracker();
         List<UserAction> actions = new ArrayList<>();
         actions.add(new ExitAction(out));
         Input in = new StubInput(
@@ -43,7 +43,7 @@ public class ValidateInputTest {
         );
         ValidateInput input = new ValidateInput(out, in);
         int selected = input.askInt("Enter menu:");
-        new StartUI(out).init(in, tracker, actions);
+        new StartUI(out).init(in, memTracker, actions);
         assertThat(out.toString(), is("Menu." + System.lineSeparator()
                 + "0. === Exit Program ====" + System.lineSeparator()
         ));

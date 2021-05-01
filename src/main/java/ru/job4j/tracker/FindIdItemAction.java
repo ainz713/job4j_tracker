@@ -13,9 +13,9 @@ public class FindIdItemAction implements UserAction {
     }
 
     @Override
-    public boolean execute(Input input, Tracker tracker) {
+    public boolean execute(Input input, MemTracker memTracker) {
         int nomer = input.askInt("Введите id заявки, которую необходимо найти: ");
-        Item temp = tracker.findById(nomer);
+        Item temp = memTracker.findById(nomer);
         if (temp != null) {
             out.println("Ваша заявка: " + temp);
         } else {

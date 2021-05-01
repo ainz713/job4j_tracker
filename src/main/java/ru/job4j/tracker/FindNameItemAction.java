@@ -15,9 +15,9 @@ public class FindNameItemAction implements UserAction {
     }
 
     @Override
-    public boolean execute(Input input, Tracker tracker) {
+    public boolean execute(Input input, MemTracker memTracker) {
         String imya = input.askStr("Введите имя заявки, которую необходимо найти: ");
-        List<Item> massiv = tracker.findByName(imya);
+        List<Item> massiv = memTracker.findByName(imya);
         if (massiv.size() != 0) {
             for (int i = 0; i < massiv.size(); i++) {
                 out.println(massiv.get(i));
