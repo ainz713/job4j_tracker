@@ -11,6 +11,7 @@ public class SqlTracker implements Store {
 
     public SqlTracker() {
     }
+
     public SqlTracker(Connection cn) {
         this.cn = cn;
     }

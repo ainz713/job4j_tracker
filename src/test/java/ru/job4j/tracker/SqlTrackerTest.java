@@ -68,7 +68,7 @@ public class SqlTrackerTest {
             tracker.add(new Item("name"));
             tracker.add(new Item("name1"));
             List<Item> items = tracker.findAll();
-            assertThat(items.get(1).getName(), is("name1"));
+            assertThat(items.get(0).getName(), is("name"));
         }
     }
 
