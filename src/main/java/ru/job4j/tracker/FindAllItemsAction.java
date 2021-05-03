@@ -15,7 +15,7 @@ public class FindAllItemsAction implements UserAction {
     }
 
     @Override
-    public boolean execute(Input input, MemTracker memTracker) {
+    public boolean execute(Input input, Store memTracker) {
         List<Item> massiv = memTracker.findAll();
         for (int i = 0; i < massiv.size(); i++) {
             out.println(massiv.get(i));

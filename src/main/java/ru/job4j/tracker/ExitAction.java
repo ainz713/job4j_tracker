@@ -9,11 +9,11 @@ public class ExitAction implements UserAction {
 
     @Override
     public String name() {
-        return "=== Exit Program ====";
+        return "Exit Program";
     }
 
     @Override
-    public boolean execute(Input input, MemTracker memTracker) {
+    public boolean execute(Input input, Store memTracker) {
         return false;
     }
 }

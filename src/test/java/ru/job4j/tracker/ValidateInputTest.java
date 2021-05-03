@@ -2,6 +2,7 @@ package ru.job4j.tracker;
 
 import org.junit.Test;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class ValidateInputTest {
     }
 
     @Test
-    public void whenNegativeInput() {
+    public void whenNegativeInput() throws SQLException {
         Output out = new StubOutput();
         Store memTracker = new SqlTracker();
         List<UserAction> actions = new ArrayList<>();
@@ -45,7 +46,7 @@ public class ValidateInputTest {
         int selected = input.askInt("Enter menu:");
         new StartUI(out).init(in, memTracker, actions);
         assertThat(out.toString(), is("Menu." + System.lineSeparator()
-                + "0. === Exit Program ====" + System.lineSeparator()
+                + "0. Exit Program" + System.lineSeparator()
         ));
     }
 }

@@ -2,174 +2,318 @@ package ru.job4j.tracker;
 
 import org.junit.Test;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 public class StartUITest {
 
     @Test
-    public void whenCreateItem() {
+    public void whenCreateItem() throws SQLException {
+        Store tracker = new SqlTracker();
+        tracker.init();
         Output out = new StubOutput();
         Input in = new StubInput(
                 new String[] {"0", "Item name", "1"}
         );
-        Store memTracker = new SqlTracker();
         List<UserAction> actions = new ArrayList<>();
                 actions.add(new CreateAction(out));
                 actions.add(new ExitAction(out));
-        new StartUI(out).init(in, memTracker, actions);
-        assertThat(memTracker.findAll().get(0).getName(), is("Item name"));
-    }
-
-    @Test
-    public void whenReplaceItem() {
-        Output out = new StubOutput();
-        Store memTracker = new SqlTracker();
-        /* Добавим в tracker новую заявку */
-        Item item = memTracker.add(new Item("Replaced item"));
-        /* Входные данные должны содержать ID добавленной заявки item.getId() */
-        String replacedName = "New item name";
-        Input in = new StubInput(
-                new String[] {"0", "1", "New item name", "1"}
-        );
-        List<UserAction> actions = new ArrayList<>();
-                actions.add(new ReplaceAction(out));
-                actions.add(new ExitAction(out));
-        new StartUI(out).init(in, memTracker, actions);
-        assertThat(memTracker.findById(item.getId()).getName(), is(replacedName));
-    }
-
-    @Test
-    public void whenDeleteItem() {
-        Output out = new StubOutput();
-        Store memTracker = new SqlTracker();
-        /* Добавим в tracker новую заявку */
-        Item item = memTracker.add(new Item("Deleted item"));
-        /* Входные данные должны содержать ID добавленной заявки item.getId() */
-        Input in = new StubInput(
-                new String[] {"0", "1", "1"}
-        );
-        List<UserAction> actions = new ArrayList<>();
-        actions.add(new DeleteAction(out));
-        actions.add(new ExitAction(out));
-        new StartUI(out).init(in, memTracker, actions);
-        assertThat(memTracker.findById(item.getId()), is(nullValue()));
-    }
-
-    @Test
-    public void whenExit() {
-        Output out = new StubOutput();
-        Store memTracker = new SqlTracker();
-        Input in = new StubInput(
-                new String[] {"0"}
-        );
-        List<UserAction> actions = new ArrayList<>();
-        actions.add(new ExitAction(out));
-        new StartUI(out).init(in, memTracker, actions);
-        assertThat(out.toString(), is(
-                "Menu." + System.lineSeparator()
-                        + "0. === Exit Program ====" + System.lineSeparator()
-        ));
-    }
-
-    @Test
-    public void whenFindAllAction() {
-         Output out = new StubOutput();
-        Store memTracker = new SqlTracker();
-        Item item = memTracker.add(new Item("New item name"));
-        Input in = new StubInput(
-                new String[] {"0", "1"}
-        );
-        List<UserAction> actions = new ArrayList<>();
-                actions.add(new FindAllItemsAction(out));
-                actions.add(new ExitAction(out));
-        List<Item> massiv = memTracker.findAll();
-        new StartUI(out).init(in, memTracker, actions);
-        assertThat(out.toString(), is(
-                "Menu." + System.lineSeparator()
-                        + "0. === Show all Items ====" + System.lineSeparator()
-                        + "1. === Exit Program ====" + System.lineSeparator()
-                        + massiv.get(0) + System.lineSeparator()
-                        + "Menu." + System.lineSeparator()
-                        + "0. === Show all Items ====" + System.lineSeparator()
-                        + "1. === Exit Program ====" + System.lineSeparator()
-        ));
-    }
-
-    @Test
-    public void whenFindByNameAction() {
-        Output out = new StubOutput();
-        Store memTracker = new SqlTracker();
-        Item item = memTracker.add(new Item("New item name"));
-        Input in = new StubInput(
-                new String[] {"0", "New item name", "1"}
-        );
-        List<UserAction> actions = new ArrayList<>();
-        actions.add(new FindNameItemAction(out));
-        actions.add(new ExitAction(out));
-        List<Item> massiv = memTracker.findAll();
-        new StartUI(out).init(in, memTracker, actions);
-        assertThat(out.toString(), is(
-                "Menu." + System.lineSeparator()
-                        + "0. === Find Item by Name ===="
-                        + System.lineSeparator() + "1. === Exit Program ===="
-                        + System.lineSeparator() + massiv.get(0)
-                        + System.lineSeparator() + "Menu."
-                        + System.lineSeparator()
-                        + "0. === Find Item by Name ====" + System.lineSeparator()
-                        + "1. === Exit Program ====" + System.lineSeparator()
-        ));
-    }
-
-    @Test
-    public void whenFindByIdAction() {
-        Output out = new StubOutput();
-        Store memTracker = new SqlTracker();
-        Item item = memTracker.add(new Item("New item name"));
-        Input in = new StubInput(
-                new String[]{"0", "1", "1"}
-        );
-        List<UserAction> actions = new ArrayList<>();
-        actions.add(new FindIdItemAction(out));
-        actions.add(new ExitAction(out));
-        List<Item> massiv = memTracker.findAll();
-        new StartUI(out).init(in, memTracker, actions);
-        assertThat(out.toString(), is(
-                "Menu." + System.lineSeparator()
-                        + "0. === Find Item by Id ===="
-                        + System.lineSeparator()
-                        + "1. === Exit Program ===="
-                        + System.lineSeparator()
-                        + "Ваша заявка: " + massiv.get(0)
-                        + System.lineSeparator() + "Menu."
-                        + System.lineSeparator() + "0. === Find Item by Id ===="
-                        + System.lineSeparator() + "1. === Exit Program ===="
-                        + System.lineSeparator()
-        ));
-    }
-
-    @Test
-    public void whenInvalidExit() {
-        Output out = new StubOutput();
-        Input in = new StubInput(
-                new String[] {"9", "0"}
-        );
-        Store memTracker = new SqlTracker();
-        List<UserAction> actions = new ArrayList<>();
-        actions.add(new ExitAction(out));
-        new StartUI(out).init(in, memTracker, actions);
+        new StartUI(out).init(in, tracker, actions);
         assertThat(out.toString(), is(
                 String.format(
                         "Menu.%n"
-                                + "0. === Exit Program ====%n"
-                                + "Wrong input, you can select: 0 .. 0%n"
+                                + "0. Create a new Item%n"
+                                + "1. Exit Program%n"
+                                + "New item created%n"
                                 + "Menu.%n"
-                                + "0. === Exit Program ====%n"
+                                + "0. Create a new Item%n"
+                                + "1. Exit Program%n"
                 )
         ));
     }
+
+    @Test
+        public void whenShowItem() throws SQLException {
+        Store tracker = new SqlTracker();
+        tracker.init();
+            Output out = new StubOutput();
+            List<Item> item = tracker.findAll();
+            StringBuilder s = new StringBuilder();
+        for (Item e
+                :item) {
+            s.append(e).append(System.lineSeparator());
+        }
+            Input in = new StubInput(
+                    new String[]{"0", "1"}
+            );
+            List<UserAction> actions = Arrays.asList(
+                    new ShowItemAction(out),
+                    new ExitAction(out)
+            );
+            new StartUI(out).init(in, tracker, actions);
+            assertThat(out.toString(), is(
+                    String.format(
+                            "Menu.%n"
+                                    + "0. Show all items%n"
+                                    + "1. Exit Program%n"
+                                    + s
+                                    + "Menu.%n"
+                                    + "0. Show all items%n"
+                                    + "1. Exit Program%n"
+                    )
+            ));
+        }
+
+    @Test
+        public void whenNotShowItem() throws SQLException {
+        Store tracker = new SqlTracker();
+        tracker.init();
+            Output out = new StubOutput();
+            Input in = new StubInput(
+                    new String[]{"0", "1"}
+            );
+        List<Item> item = tracker.findAll();
+        for (Item e
+                :item) {
+            tracker.delete(e.getId());
+        }
+            List<UserAction> actions = Arrays.asList(
+                    new ShowItemAction(out),
+                    new ExitAction(out)
+            );
+            new StartUI(out).init(in, tracker, actions);
+            assertThat(out.toString(), is(
+                    String.format(
+                            "Menu.%n"
+                                    + "0. Show all items%n"
+                                    + "1. Exit Program%n"
+                                    + "No items to show%n"
+                                    + "Menu.%n"
+                                    + "0. Show all items%n"
+                                    + "1. Exit Program%n"
+                    )
+            ));
+        }
+
+    @Test
+        public void whenReplaceItem() throws SQLException {
+        Store tracker = new SqlTracker();
+        tracker.init();
+            Output out = new StubOutput();
+            Item item = tracker.add(new Item("Replaced item"));
+            String replacedName = "New item name";
+            Input in = new StubInput(
+                    new String[]{"0", String.valueOf(item.getId()), replacedName, "1"}
+            );
+            List<UserAction> actions = Arrays.asList(
+                    new ReplaceAction(out),
+                    new ExitAction(out)
+            );
+            new StartUI(out).init(in, tracker, actions);
+            assertThat(out.toString(), is(
+                    String.format(
+                            "Menu.%n"
+                                    + "0. Replace item%n"
+                                    + "1. Exit Program%n"
+                                    + "Item with id " + item.getId()
+                                    + " update%n"
+                                    + "Menu.%n"
+                                    + "0. Replace item%n"
+                                    + "1. Exit Program%n"
+                    )
+            ));
+        }
+
+    @Test
+        public void whenDeleteItem() throws SQLException {
+        Store tracker = new SqlTracker();
+        tracker.init();
+            Output out = new StubOutput();
+            Item item = tracker.add(new Item("Deleted item"));
+            Input in = new StubInput(
+                    new String[]{"0", String.valueOf(item.getId()), "1"}
+            );
+            List<UserAction> actions = Arrays.asList(
+                    new DeleteAction(out),
+                    new ExitAction(out)
+            );
+            new StartUI(out).init(in, tracker, actions);
+            assertThat(out.toString(), is(
+                    String.format(
+                            "Menu.%n"
+                                    + "0. Delete Item%n"
+                                    + "1. Exit Program%n"
+                                    + "Item with id " + item.getId()
+                                    + " deleted%n"
+                                    + "Menu.%n"
+                                    + "0. Delete Item%n"
+                                    + "1. Exit Program%n"
+                    )
+            ));
+        }
+
+    @Test
+        public void whenNotDeleteItem() throws SQLException {
+        Store tracker = new SqlTracker();
+        tracker.init();
+            Output out = new StubOutput();
+            Item item = tracker.add(new Item("Deleted item"));
+            Input in = new StubInput(
+                    new String[]{"0", String.valueOf(item.getId() + 1), "1"}
+            );
+            List<UserAction> actions = Arrays.asList(
+                    new DeleteAction(out),
+                    new ExitAction(out)
+            );
+            new StartUI(out).init(in, tracker, actions);
+            assertThat(out.toString(), is(
+                    String.format(
+                            "Menu.%n"
+                                    + "0. Delete Item%n"
+                                    + "1. Exit Program%n"
+                                    + "No such id%n"
+                                    + "Menu.%n"
+                                    + "0. Delete Item%n"
+                                    + "1. Exit Program%n"
+                    )
+            ));
+        }
+
+    @Test
+        public void whenFindItemId() throws SQLException {
+        Store tracker = new SqlTracker();
+        tracker.init();
+            Output out = new StubOutput();
+            Item item = tracker.add(new Item("Item"));
+            Input in = new StubInput(
+                    new String[]{"0", String.valueOf(item.getId()), "1"}
+            );
+            List<UserAction> actions = Arrays.asList(
+                    new FindIdItemAction(out),
+                    new ExitAction(out)
+            );
+            new StartUI(out).init(in, tracker, actions);
+            assertThat(out.toString(), is(
+                    String.format(
+                            "Menu.%n"
+                                    + "0. Find item by id%n"
+                                    + "1. Exit Program%n"
+                                    + item.toString() + "%n"
+                                    + "Menu.%n"
+                                    + "0. Find item by id%n"
+                                    + "1. Exit Program%n"
+                    )
+            ));
+        }
+
+    @Test
+        public void whenNotFindItemId() throws SQLException {
+        Store tracker = new SqlTracker();
+        tracker.init();
+            Output out = new StubOutput();
+            Item item = tracker.add(new Item("Item"));
+            Input in = new StubInput(
+                    new String[]{"0", String.valueOf(item.getId() + 1), "1"}
+            );
+            List<UserAction> actions = Arrays.asList(
+                    new FindIdItemAction(out),
+                    new ExitAction(out)
+            );
+            new StartUI(out).init(in, tracker, actions);
+            assertThat(out.toString(), is(
+                    String.format(
+                            "Menu.%n"
+                                    + "0. Find item by id%n"
+                                    + "1. Exit Program%n"
+                                    + "No such item with id "
+                                    + (item.getId() + 1) + "%n"
+                                    + "Menu.%n"
+                                    + "0. Find item by id%n"
+                                    + "1. Exit Program%n"
+                    )
+            ));
+        }
+
+    @Test
+        public void whenFindItemName() throws SQLException {
+        Store tracker = new SqlTracker();
+        tracker.init();
+            Output out = new StubOutput();
+            Item item = tracker.add(new Item("Item1"));
+            String name = "Item1";
+            Input in = new StubInput(
+                    new String[]{"0", name, "1"}
+            );
+            List<UserAction> actions = Arrays.asList(
+                    new FindNameItemAction(out),
+                    new ExitAction(out)
+            );
+            new StartUI(out).init(in, tracker, actions);
+            assertThat(out.toString(), is(
+                    String.format(
+                            "Menu.%n"
+                                    + "0. Find item by name%n"
+                                    + "1. Exit Program%n"
+                                    + item.toString() + "%n"
+                                    + "Menu.%n"
+                                    + "0. Find item by name%n"
+                                    + "1. Exit Program%n"
+                    )
+            ));
+        }
+
+    @Test
+        public void whenNotFindItemName() throws SQLException {
+        Store tracker = new SqlTracker();
+        tracker.init();
+            Output out = new StubOutput();
+            String name = "Item2";
+            Input in = new StubInput(
+                    new String[]{"0", name, "1"}
+            );
+            List<UserAction> actions = Arrays.asList(
+                    new FindNameItemAction(out),
+                    new ExitAction(out)
+            );
+            new StartUI(out).init(in, tracker, actions);
+            assertThat(out.toString(), is(
+                    String.format(
+                            "Menu.%n"
+                                    + "0. Find item by name%n"
+                                    + "1. Exit Program%n"
+                                    + "No such item with name "
+                                    + "\"" + name + "\"" + "%n"
+                                    + "Menu.%n"
+                                    + "0. Find item by name%n"
+                                    + "1. Exit Program%n"
+                    )
+            ));
+        }
+
+    @Test
+        public void whenExit() throws SQLException {
+        Store tracker = new SqlTracker();
+        tracker.init();
+            Output out = new StubOutput();
+            Input in = new StubInput(
+                    new String[]{"1", "0"}
+            );
+            List<UserAction> actions = new ArrayList<>();
+            actions.add(new ExitAction(out));
+            new StartUI(out).init(in, tracker, actions);
+            assertThat(out.toString(), is(
+                    String.format(
+                            "Menu.%n"
+                                    + "0. Exit Program%n"
+                                    + "Wrong input, you can select: 0 .. 0%n"
+                                    + "Menu.%n"
+                                    + "0. Exit Program%n"
+                    )
+            ));
+        }
 }

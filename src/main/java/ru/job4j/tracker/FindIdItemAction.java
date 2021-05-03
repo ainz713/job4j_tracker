@@ -1,5 +1,7 @@
 package ru.job4j.tracker;
 
+import java.sql.SQLException;
+
 public class FindIdItemAction implements UserAction {
     private final Output out;
 
@@ -9,17 +11,17 @@ public class FindIdItemAction implements UserAction {
 
     @Override
     public String name() {
-        return "=== Find Item by Id ====";
+        return "Find item by id";
     }
 
     @Override
-    public boolean execute(Input input, MemTracker memTracker) {
-        int nomer = input.askInt("Введите id заявки, которую необходимо найти: ");
+    public boolean execute(Input input, Store memTracker) throws SQLException {
+        int nomer = input.askInt("--> Enter item id: ");
         Item temp = memTracker.findById(nomer);
         if (temp != null) {
-            out.println("Ваша заявка: " + temp);
+            out.println(temp);
         } else {
-            out.println("Заявка с таким id не найдена");
+            out.println("No such item with id " + nomer);
         }
         return true;
     }

@@ -52,9 +52,9 @@ public class SqlTracker implements Store {
     public boolean replace(int id, Item item) {
         boolean result = false;
         try (PreparedStatement statement =
-                     cn.prepareStatement("update items set name = ?, where id = ?")) {
+                     cn.prepareStatement("update items set name = ? where id = ?")) {
             statement.setString(1, item.getName());
-            statement.setInt(2, item.getId());
+            statement.setInt(2, id);
             result = statement.executeUpdate() > 0;
         } catch (Exception e) {
             e.printStackTrace();
@@ -82,6 +82,7 @@ public class SqlTracker implements Store {
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     items.add(new Item(
+                            resultSet.getInt("id"),
                             resultSet.getString("name")
                     ));
                 }
@@ -101,6 +102,7 @@ public class SqlTracker implements Store {
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     items.add(new Item(
+                            resultSet.getInt("id"),
                             resultSet.getString("name")
                     ));
                 }
@@ -113,18 +115,19 @@ public class SqlTracker implements Store {
 
     @Override
     public Item findById(int id) throws SQLException {
-        List<Item> items = new ArrayList<>();
+        Item items = new Item();
         try (PreparedStatement statement =
                      cn.prepareStatement("select * from items where id = ?")) {
             statement.setInt(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    items.add(new Item(
+                if (resultSet.next()) {
+                    items = (new Item(
+                            resultSet.getInt("id"),
                             resultSet.getString("name")
                     ));
                 }
             }
         }
-        return items.size() > 0 ? items.get(0) : null;
+        return items.getId() > 0 ? items : null;
     }
 }

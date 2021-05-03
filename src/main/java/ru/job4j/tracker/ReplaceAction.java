@@ -9,18 +9,18 @@ public class ReplaceAction implements UserAction {
 
     @Override
     public String name() {
-        return "=== Edit Item ====";
+        return "Replace item";
     }
 
     @Override
-    public boolean execute(Input input, MemTracker memTracker) {
-        int nomer = input.askInt("Введите id заявки: ");
-        String imya = input.askStr("Введите имя изменяемой заявки: ");
-        Item temp = new Item(imya);
+    public boolean execute(Input input, Store memTracker) {
+        int nomer = input.askInt("--> Enter item id to replace: ");
+        String imya = input.askStr("--> Enter item name to replace from: ");
+        Item temp = new Item(nomer, imya);
         if (memTracker.replace(nomer, temp)) {
-            out.println("Заявка изменена");
+            out.println("Item with id " + nomer + " update");
         } else {
-            out.println("Что-то пошло не так, попробуйте еще раз");
+            out.println("No such id");
         }
         return true;
     }

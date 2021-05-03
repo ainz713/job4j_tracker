@@ -9,16 +9,16 @@ public class DeleteAction implements UserAction {
 
     @Override
     public String name() {
-        return "=== Delete Item ====";
+        return "Delete Item";
     }
 
     @Override
-    public boolean execute(Input input, MemTracker memTracker) {
-        int nomer = input.askInt("Введите id заявки, которую необходимо удалить: ");
+    public boolean execute(Input input, Store memTracker) {
+        int nomer = input.askInt("--> Enter item id: ");
         if (memTracker.delete(nomer)) {
-            out.println("Заявка удалена");
+            out.println("Item with id " + nomer + " deleted");
         } else {
-            out.println("Что-то пошло не так, попробуйте еще раз");
+            out.println("No such id");
         }
         return true;
     }
